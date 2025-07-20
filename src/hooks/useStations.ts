@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Station, Reading, SearchParams, StationStatus } from '@/lib/types';
+import { useState } from 'react';
+import { Station, Reading, SearchParams } from '@/lib/types';
 import { searchStations, getLatestReadings } from '@/lib/api/environment-agency';
 import { determineStationStatus } from '@/lib/utils';
 

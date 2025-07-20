@@ -4,6 +4,45 @@ import { weatherCache, handleApiError } from '../utils';
 const WEATHER_API_KEY = process.env.NEXT_PUBLIC_WEATHER_API_KEY;
 const WEATHER_API_BASE = 'https://api.openweathermap.org/data/2.5';
 
+// OpenWeatherMap API response interfaces
+interface WeatherResponse {
+  main: {
+    temp: number;
+    humidity: number;
+    pressure: number;
+    temp_min: number;
+    temp_max: number;
+  };
+  weather: Array<{
+    main: string;
+    description: string;
+    icon: string;
+  }>;
+  wind: {
+    speed: number;
+  };
+  rain?: {
+    '1h': number;
+  };
+}
+
+interface ForecastResponse {
+  list: Array<{
+    dt_txt: string;
+    main: {
+      temp_min: number;
+      temp_max: number;
+    };
+    weather: Array<{
+      main: string;
+      icon: string;
+    }>;
+    rain?: {
+      '3h': number;
+    };
+  }>;
+}
+
 class WeatherAPI {
   private async fetchWithErrorHandling<T>(url: string): Promise<T> {
     try {
@@ -26,12 +65,12 @@ class WeatherAPI {
     }
 
     const cacheKey = `weather-${lat}-${lng}`;
-    const cached = weatherCache.get(cacheKey);
+    const cached = weatherCache.get(cacheKey) as WeatherData | undefined;
     if (cached) return cached;
 
     const url = `${WEATHER_API_BASE}/weather?lat=${lat}&lon=${lng}&appid=${WEATHER_API_KEY}&units=metric`;
     
-    const data = await this.fetchWithErrorHandling<any>(url);
+    const data = await this.fetchWithErrorHandling<WeatherResponse>(url);
     
     const weather: WeatherData = {
       temperature: Math.round(data.main.temp),
@@ -55,14 +94,14 @@ class WeatherAPI {
     }
 
     const cacheKey = `forecast-${lat}-${lng}`;
-    const cached = weatherCache.get(cacheKey);
+    const cached = weatherCache.get(cacheKey) as WeatherForecast[] | undefined;
     if (cached) return cached;
 
     const url = `${WEATHER_API_BASE}/forecast?lat=${lat}&lon=${lng}&appid=${WEATHER_API_KEY}&units=metric`;
     
-    const data = await this.fetchWithErrorHandling<any>(url);
+    const data = await this.fetchWithErrorHandling<ForecastResponse>(url);
     
-    const forecast: WeatherForecast[] = data.list.slice(0, 5).map((item: any) => ({
+    const forecast: WeatherForecast[] = data.list.slice(0, 5).map((item) => ({
       date: item.dt_txt,
       temperature: {
         min: Math.round(item.main.temp_min),

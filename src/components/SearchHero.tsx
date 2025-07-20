@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useCallback } from 'react'
-import { Search, MapPin, Loader2 } from 'lucide-react'
+import { Search, MapPin } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
 import { useGeolocation } from '@/hooks/useGeolocation'
@@ -19,7 +19,7 @@ export default function SearchHero({ onSearch, onLocationSearch }: SearchHeroPro
     location, 
     loading: locationLoading, 
     error: locationError, 
-    getCurrentLocation 
+    requestLocation 
   } = useGeolocation()
 
   const handleSearch = useCallback(async (e: React.FormEvent) => {
@@ -38,16 +38,13 @@ export default function SearchHero({ onSearch, onLocationSearch }: SearchHeroPro
     }
   }, [searchQuery, onSearch])
 
-  const handleLocationSearch = useCallback(async () => {
-    try {
-      const coords = await getCurrentLocation()
-      if (coords) {
-        onLocationSearch?.(coords.lat, coords.lng)
-      }
-    } catch (error) {
-      console.error('Location search failed:', error)
+  const handleLocationSearch = useCallback(() => {
+    requestLocation()
+    // The location will be available in the location state once obtained
+    if (location) {
+      onLocationSearch?.(location.lat, location.lng)
     }
-  }, [getCurrentLocation, onLocationSearch])
+  }, [requestLocation, location, onLocationSearch])
 
   return (
     <div className="w-full max-w-2xl mx-auto">

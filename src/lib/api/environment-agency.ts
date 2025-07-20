@@ -3,17 +3,53 @@ import {
   StationDetail,
   Reading,
   SearchParams,
-  ApiResponse,
-  ApiError,
-  Measure
+  ReadingParameter
 } from '../types';
 import { buildUrl, handleApiError, stationsCache, readingsCache } from '../utils';
 
 const API_BASE = 'https://environment.data.gov.uk/flood-monitoring';
 
+// API Response types for Environment Agency
+interface RawStation {
+  notation: string;
+  label: string;
+  riverName?: string;
+  town?: string;
+  lat: number;
+  long: number;
+  catchmentName?: string;
+  easting?: number;
+  northing?: number;
+  gridReference?: string;
+  measures?: RawMeasure[];
+}
+
+interface RawMeasure {
+  '@id': string;
+  parameter: string;
+  unit: string;
+  unitName: string;
+  qualifier?: string;
+  station: string;
+}
+
+interface RawReadingResponse {
+  '@id': string;
+  dateTime: string;
+  value: number;
+  measure?: {
+    unit?: string;
+    parameter?: string;
+    qualifier?: string;
+    station?: {
+      notation?: string;
+    };
+  };
+}
+
 // Core API client
 class EnvironmentAgencyAPI {
-  private async fetchWithErrorHandling<T>(url: string): Promise<ApiResponse<T>> {
+  private async fetchWithErrorHandling<T>(url: string): Promise<T> {
     try {
       const response = await fetch(url, {
         headers: {
@@ -49,7 +85,7 @@ class EnvironmentAgencyAPI {
       _limit: 50 // Reasonable limit for UI
     });
 
-    const response = await this.fetchWithErrorHandling<any>(url);
+    const response = await this.fetchWithErrorHandling<{ items: RawStation[] }>(url);
     
     const stations: Station[] = response.items.map(item => ({
       id: item.notation,
@@ -60,9 +96,9 @@ class EnvironmentAgencyAPI {
       long: item.long,
       status: 'unknown', // Will be updated with readings
       catchmentName: item.catchmentName,
-      measures: item.measures?.map((measure: any) => ({
+      measures: item.measures?.map((measure: RawMeasure) => ({
         id: measure['@id'],
-        parameter: measure.parameter,
+        parameter: measure.parameter as ReadingParameter,
         unit: measure.unit,
         unitName: measure.unitName,
         qualifier: measure.qualifier,
@@ -77,7 +113,7 @@ class EnvironmentAgencyAPI {
   // Get station details
   async getStationDetail(stationId: string): Promise<StationDetail> {
     const url = `${API_BASE}/id/stations/${stationId}`;
-    const response = await this.fetchWithErrorHandling<any>(url);
+    const response = await this.fetchWithErrorHandling<{ items: RawStation[] }>(url);
     
     const item = response.items[0];
     if (!item) {
@@ -97,9 +133,9 @@ class EnvironmentAgencyAPI {
       easting: item.easting,
       northing: item.northing,
       gridReference: item.gridReference,
-      measures: item.measures?.map((measure: any) => ({
+      measures: item.measures?.map((measure: RawMeasure) => ({
         id: measure['@id'],
-        parameter: measure.parameter,
+        parameter: measure.parameter as ReadingParameter,
         unit: measure.unit,
         unitName: measure.unitName,
         qualifier: measure.qualifier,
@@ -115,14 +151,14 @@ class EnvironmentAgencyAPI {
     if (cached) return cached;
 
     const url = `${API_BASE}/data/readings?latest&_limit=1000`;
-    const response = await this.fetchWithErrorHandling<any>(url);
+    const response = await this.fetchWithErrorHandling<{ items: RawReadingResponse[] }>(url);
     
     const readings: Reading[] = response.items.map(item => ({
       id: item['@id'],
       timestamp: item.dateTime,
       value: item.value,
       unit: item.measure?.unit || 'm',
-      parameter: item.measure?.parameter || 'level',
+      parameter: (item.measure?.parameter || 'level') as ReadingParameter,
       qualifier: item.measure?.qualifier,
       quality: 'good', // Default assumption
       stationId: item.measure?.station?.notation || ''
@@ -148,14 +184,14 @@ class EnvironmentAgencyAPI {
       _sorted: true
     });
 
-    const response = await this.fetchWithErrorHandling<any>(url);
+    const response = await this.fetchWithErrorHandling<{ items: RawReadingResponse[] }>(url);
     
     const readings: Reading[] = response.items.map(item => ({
       id: item['@id'],
       timestamp: item.dateTime,
       value: item.value,
       unit: item.measure?.unit || 'm',
-      parameter: item.measure?.parameter || 'level',
+      parameter: (item.measure?.parameter || 'level') as ReadingParameter,
       qualifier: item.measure?.qualifier,
       quality: 'good',
       stationId: stationId

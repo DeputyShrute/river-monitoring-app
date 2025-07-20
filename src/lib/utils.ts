@@ -138,31 +138,42 @@ export class SimpleCache<T> {
 // Create cache instances
 export const stationsCache = new SimpleCache<Station[]>();
 export const readingsCache = new SimpleCache<Reading[]>();
-export const weatherCache = new SimpleCache<any>();
+export const weatherCache = new SimpleCache<unknown>();
 
 // Error handling utilities
-export function handleApiError(error: any): string {
-  if (error.name === 'TypeError' && error.message.includes('fetch')) {
-    return 'Network error. Please check your connection.';
+export function handleApiError(error: unknown): string {
+  if (error instanceof Error) {
+    if (error.name === 'TypeError' && error.message.includes('fetch')) {
+      return 'Network error. Please check your connection.';
+    }
+    return error.message;
   }
   
-  if (error.status === 404) {
-    return 'Station not found.';
+  if (typeof error === 'object' && error !== null) {
+    const errorObj = error as { status?: number; message?: string };
+    
+    if (errorObj.status === 404) {
+      return 'Station not found.';
+    }
+    
+    if (errorObj.status === 429) {
+      return 'Too many requests. Please try again later.';
+    }
+    
+    if (errorObj.status && errorObj.status >= 500) {
+      return 'Server error. Please try again later.';
+    }
+    
+    if (errorObj.message) {
+      return errorObj.message;
+    }
   }
   
-  if (error.status === 429) {
-    return 'Too many requests. Please try again later.';
-  }
-  
-  if (error.status >= 500) {
-    return 'Server error. Please try again later.';
-  }
-  
-  return error.message || 'An unexpected error occurred.';
+  return 'An unexpected error occurred.';
 }
 
 // URL utilities
-export function buildUrl(base: string, params: Record<string, any>): string {
+export function buildUrl(base: string, params: Record<string, unknown>): string {
   const url = new URL(base);
   
   Object.entries(params).forEach(([key, value]) => {
