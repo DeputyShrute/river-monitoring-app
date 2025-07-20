@@ -110,8 +110,12 @@ export default function SearchHero({ onSearch, onLocationSearch }: SearchHeroPro
 
       {/* Quick Search Examples */}
       <div className="mt-8 text-center">
-        <p className="text-sm text-gray-500 mb-3">Popular searches:</p>
-        <div className="flex flex-wrap justify-center gap-2">
+        <p id="search-examples-label" className="text-sm text-gray-500 mb-3">Popular searches:</p>
+        <div 
+          className="flex flex-wrap justify-center gap-2"
+          role="group"
+          aria-labelledby="search-examples-label"
+        >
           {[
             'River Thames',
             'River Severn',
@@ -124,7 +128,9 @@ export default function SearchHero({ onSearch, onLocationSearch }: SearchHeroPro
               key={example}
               onClick={() => setSearchQuery(example)}
               className="px-3 py-1 text-sm text-primary-600 bg-primary-50 hover:bg-primary-100 
-                         rounded-full transition-colors border border-primary-200 hover:border-primary-300"
+                         rounded-full transition-colors border border-primary-200 hover:border-primary-300
+                         focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+              aria-label={`Search for ${example}`}
             >
               {example}
             </button>
@@ -133,15 +139,19 @@ export default function SearchHero({ onSearch, onLocationSearch }: SearchHeroPro
       </div>
 
       {/* Emergency Notice */}
-      <div className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+      <div 
+        className="mt-8 p-4 bg-blue-50 border border-blue-200 rounded-lg"
+        role="alert"
+        aria-labelledby="emergency-heading"
+      >
         <div className="flex items-start">
-          <div className="flex-shrink-0">
+          <div className="flex-shrink-0" aria-hidden="true">
             <svg className="h-5 w-5 text-blue-400 mt-0.5" fill="currentColor" viewBox="0 0 20 20">
               <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd" />
             </svg>
           </div>
           <div className="ml-3">
-            <h3 className="text-sm font-medium text-blue-800">
+            <h3 id="emergency-heading" className="text-sm font-medium text-blue-800">
               Emergency Information
             </h3>
             <p className="text-sm text-blue-700 mt-1">

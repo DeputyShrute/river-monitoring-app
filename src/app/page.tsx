@@ -5,9 +5,15 @@ export default function HomePage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       {/* Hero Section with Search */}
-      <section className="pt-16 pb-20 px-4 sm:px-6 lg:px-8">
+      <section 
+        className="pt-16 pb-20 px-4 sm:px-6 lg:px-8"
+        aria-labelledby="hero-heading"
+      >
         <div className="max-w-4xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6">
+          <h1 
+            id="hero-heading"
+            className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900 mb-6"
+          >
             UK River Levels
           </h1>
           <p className="text-xl sm:text-2xl text-gray-600 mb-12 max-w-3xl mx-auto leading-relaxed">
@@ -20,17 +26,29 @@ export default function HomePage() {
       </section>
 
       {/* Recent Stations Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
+      <section 
+        className="py-16 px-4 sm:px-6 lg:px-8 bg-white"
+        aria-label="Recent monitoring stations"
+      >
         <div className="max-w-7xl mx-auto">
           <RecentStations />
         </div>
       </section>
 
       {/* Emergency Notice */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8 bg-blue-50">
+      <section 
+        className="py-12 px-4 sm:px-6 lg:px-8 bg-blue-50"
+        aria-labelledby="emergency-section-heading"
+      >
         <div className="max-w-4xl mx-auto text-center">
-          <div className="bg-blue-100 border border-blue-200 rounded-lg p-6">
-            <h2 className="text-lg font-semibold text-blue-900 mb-2">
+          <div 
+            className="bg-blue-100 border border-blue-200 rounded-lg p-6"
+            role="alert"
+          >
+            <h2 
+              id="emergency-section-heading"
+              className="text-lg font-semibold text-blue-900 mb-2"
+            >
               Emergency Information
             </h2>
             <p className="text-blue-800">
