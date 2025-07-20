@@ -1,4 +1,11 @@
 import { StationStatus, Reading, Station } from './types';
+import { type ClassValue, clsx } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+
+// Utility function for merging Tailwind classes
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
+}
 
 // Status determination based on readings
 export function determineStationStatus(readings: Reading[]): StationStatus {

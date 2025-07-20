@@ -20,7 +20,9 @@
     "chart.js": "^4.4.0",
     "react-chartjs-2": "^5.2.0",
     "date-fns": "^2.30.0",
-    "lucide-react": "^0.294.0"
+    "lucide-react": "^0.294.0",
+    "clsx": "^2.0.0",
+    "tailwind-merge": "^2.0.0"
   },
   "devDependencies": {
     "@types/node": "^20.8.0",
