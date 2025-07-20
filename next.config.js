@@ -1,15 +1,12 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  experimental: {
-    appDir: true,
-  },
   images: {
     domains: ['openweathermap.org'],
   },
   // Performance optimizations
   compress: true,
   poweredByHeader: false,
-  // PWA configuration
+  // Security headers
   async headers() {
     return [
       {
@@ -22,6 +19,10 @@ const nextConfig = {
           {
             key: 'X-Content-Type-Options',
             value: 'nosniff',
+          },
+          {
+            key: 'Referrer-Policy',
+            value: 'strict-origin-when-cross-origin',
           },
         ],
       },
