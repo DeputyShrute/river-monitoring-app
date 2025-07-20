@@ -56,3 +56,7 @@ logs
 # Temporary
 .tmp/
 temp/
+
+# Documentation (keep private for development guidance)
+*.md
+!README.md
