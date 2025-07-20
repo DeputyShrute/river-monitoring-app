@@ -210,6 +210,120 @@ import { useStations } from '@/hooks/useStations';
 import MyComponent from '@/components/MyComponent';
 ```
 
+## Git Workflow & Branch Management
+
+This project follows a **Git Flow** inspired strategy optimized for emergency-critical flood monitoring development.
+
+### Branch Structure
+
+**Main Branches**:
+- **`main`** - Production-ready code (protected, auto-deploys)
+- **`develop`** - Feature integration branch (protected, requires PR reviews)
+
+**Supporting Branches**:
+- **`feature/description`** - New features (branch from/merge to `develop`)
+- **`bugfix/description`** - Bug fixes (branch from/merge to `develop`)
+- **`hotfix/description`** - Emergency production fixes (branch from/merge to `main` AND `develop`)
+- **`release/vX.Y.Z`** - Release preparation (branch from `develop`, merge to `main` AND `develop`)
+
+### Development Workflow
+
+**Feature Development**:
+```bash
+# Start new feature
+git checkout develop
+git pull origin develop
+git checkout -b feature/station-search
+
+# Work and commit using conventional commits
+git add .
+git commit -m "feat: add station search functionality"
+
+# Push and create PR
+git push -u origin feature/station-search
+# Create PR: feature/station-search → develop
+```
+
+**Emergency Hotfixes**:
+```bash
+# Critical production issue
+git checkout main
+git pull origin main
+git checkout -b hotfix/api-failure
+
+# Fix and commit
+git add .
+git commit -m "fix: resolve Environment Agency API timeout"
+
+# Push and create PR to main
+git push -u origin hotfix/api-failure
+# Create PR: hotfix/api-failure → main
+```
+
+### Commit Message Convention
+
+Follow **Conventional Commits** specification:
+```
+<type>[optional scope]: <description>
+
+[optional body]
+```
+
+**Types**:
+- `feat:` - New features
+- `fix:` - Bug fixes
+- `docs:` - Documentation updates
+- `style:` - Code formatting (no logic changes)
+- `refactor:` - Code restructuring
+- `perf:` - Performance improvements
+- `test:` - Test additions or modifications
+- `build:` - Build system changes
+- `ci:` - CI configuration changes
+- `chore:` - Maintenance tasks
+
+### Automated Quality Gates
+
+**Pre-commit Hooks**:
+- Type checking validation (`npm run type-check`)
+- Linting enforcement (`npm run lint`)
+- Automatic commit blocking on failures
+
+**Pull Request Requirements**:
+- All CI checks must pass
+- Emergency use considerations documented
+- Mobile responsiveness verified
+- Accessibility compliance checked
+- Performance impact assessed
+
+### Release Management
+
+**Semantic Versioning**:
+- **MAJOR** (v2.0.0): Breaking changes
+- **MINOR** (v1.1.0): New features (backward compatible)
+- **PATCH** (v1.0.1): Bug fixes (backward compatible)
+
+**Automated Releases**:
+- Trigger: Push to `main` branch
+- Process: Automatic version bump, changelog generation, GitHub release
+- Deployment: Auto-deploy to Vercel production
+
+### Emergency Procedures
+
+**Critical Production Issues**:
+1. Create hotfix branch from `main`
+2. Implement fix with expedited review
+3. Deploy via emergency pipeline
+4. Merge to both `main` and `develop`
+5. Document in post-mortem
+
+**Quality Standards**:
+- Branch protection on `main` and `develop`
+- Required status checks and PR reviews
+- Emergency-ready performance validation
+- Accessibility and mobile compliance gates
+
+For complete workflow details, see `BRANCHING_STRATEGY.md`.
+
 ## Development Notes
 
 ### Code Conventions
