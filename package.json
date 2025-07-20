@@ -8,7 +8,10 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "prepare": "husky install",
+    "release": "standard-version",
+    "test": "npm run type-check && npm run lint"
   },
   "dependencies": {
     "next": "^14.0.0",
@@ -30,7 +33,9 @@
     "@typescript-eslint/eslint-plugin": "^6.0.0",
     "@typescript-eslint/parser": "^6.0.0",
     "eslint": "^8.50.0",
-    "eslint-config-next": "^14.0.0"
+    "eslint-config-next": "^14.0.0",
+    "husky": "^8.0.3",
+    "standard-version": "^9.5.0"
   },
   "engines": {
     "node": ">=18.0.0"

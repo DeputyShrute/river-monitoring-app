@@ -1,0 +1,50 @@
+{
+  "header": "# Changelog\n\nAll notable changes to the UK River Levels Monitoring application will be documented in this file.\n\n",
+  "types": [
+    {
+      "type": "feat",
+      "section": "✨ Features"
+    },
+    {
+      "type": "fix", 
+      "section": "🐛 Bug Fixes"
+    },
+    {
+      "type": "perf",
+      "section": "⚡ Performance Improvements"
+    },
+    {
+      "type": "refactor",
+      "section": "♻️ Code Refactoring"
+    },
+    {
+      "type": "docs",
+      "section": "📚 Documentation"
+    },
+    {
+      "type": "style",
+      "section": "🎨 Styles"
+    },
+    {
+      "type": "test",
+      "section": "🧪 Tests"
+    },
+    {
+      "type": "build",
+      "section": "🔧 Build System"
+    },
+    {
+      "type": "ci",
+      "section": "👷 CI/CD"
+    },
+    {
+      "type": "chore",
+      "section": "🏠 Chores",
+      "hidden": true
+    }
+  ],
+  "commitUrlFormat": "https://github.com/DeputyShrute/river-monitoring-app/commit/{{hash}}",
+  "compareUrlFormat": "https://github.com/DeputyShrute/river-monitoring-app/compare/{{previousTag}}...{{currentTag}}",
+  "issueUrlFormat": "https://github.com/DeputyShrute/river-monitoring-app/issues/{{id}}",
+  "userUrlFormat": "https://github.com/{{user}}"
+}
