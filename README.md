@@ -64,6 +64,15 @@ NEXT_PUBLIC_APP_URL=http://localhost:3000
 
 This application uses Environment Agency flood and river level data from the real-time data API (Beta). Not intended for safety-critical applications.
 
+## 📚 Documentation
+
+- **[Development Guide](CLAUDE.md)** - Comprehensive development setup and conventions
+- **[System Design](DESIGN.md)** - Architecture and component specifications  
+- **[Implementation Plan](IMPLEMENTATION_WORKFLOW.md)** - 8-week development roadmap
+- **[Git Workflow](BRANCHING_STRATEGY.md)** - Branching strategy and release process
+- **[CI/CD Pipeline](CI_CD.md)** - Quality gates and automated deployment process
+- **[Contributing Guide](CONTRIBUTING.md)** - How to contribute to the project
+
 ## 📄 License
 
 MIT License - see LICENSE file for details.

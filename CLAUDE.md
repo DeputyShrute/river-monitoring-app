@@ -324,6 +324,30 @@ Follow **Conventional Commits** specification:
 
 For complete workflow details, see `BRANCHING_STRATEGY.md`.
 
+## CI/CD Pipeline
+
+This project uses a comprehensive **GitHub Actions** pipeline ensuring emergency-ready code quality and automated deployments.
+
+### Quality Gates
+- **TypeScript compilation** validation on every commit
+- **ESLint code quality** enforcement  
+- **Next.js production build** verification
+- **Lighthouse performance** testing
+- **Cross-platform compatibility** (Node 18.x + 20.x)
+
+### Automated Workflows
+- **CI Pipeline**: Runs on push/PR to `main`/`develop`
+- **Release Pipeline**: Semantic versioning and GitHub releases
+- **Pre-commit Hooks**: Local quality validation before commits
+
+### Performance Standards
+- **Load Time**: <3s on 3G networks for emergency access
+- **Core Web Vitals**: LCP <2.5s, FID <100ms, CLS <0.1
+- **Accessibility**: WCAG 2.1 AA compliance for emergency use
+- **Bundle Size**: <500KB initial, <2MB total
+
+For complete CI/CD documentation, see `CI_CD.md`.
+
 ## Development Notes
 
 ### Code Conventions
