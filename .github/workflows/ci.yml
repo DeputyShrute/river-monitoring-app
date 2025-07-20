@@ -58,9 +58,10 @@ jobs:
       env:
         NEXT_PUBLIC_WEATHER_API_KEY: ${{ secrets.NEXT_PUBLIC_WEATHER_API_KEY }}
     
+    - name: Install Lighthouse CI
+      run: npm install -g @lhci/cli@0.12.x
+    
     - name: Run Lighthouse CI
-      run: |
-        npm install -g @lhci/cli@0.12.x
-        lhci autorun
+      run: lhci autorun --config=./lighthouserc.js
       env:
         LHCI_GITHUB_APP_TOKEN: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
