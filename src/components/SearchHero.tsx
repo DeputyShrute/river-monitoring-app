@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useCallback } from 'react'
+import React, { useState, useCallback } from 'react'
 import { Search, MapPin } from 'lucide-react'
 import Button from '@/components/ui/Button'
 import Input from '@/components/ui/Input'
@@ -28,8 +28,6 @@ export default function SearchHero({ onSearch, onLocationSearch }: SearchHeroPro
 
     setIsSearching(true)
     try {
-      // Simulate search delay
-      await new Promise(resolve => setTimeout(resolve, 800))
       onSearch?.(searchQuery.trim())
     } catch (error) {
       console.error('Search failed:', error)
@@ -40,11 +38,14 @@ export default function SearchHero({ onSearch, onLocationSearch }: SearchHeroPro
 
   const handleLocationSearch = useCallback(() => {
     requestLocation()
-    // The location will be available in the location state once obtained
-    if (location) {
+  }, [requestLocation])
+
+  // Effect to trigger location search when location is obtained
+  React.useEffect(() => {
+    if (location && !locationError) {
       onLocationSearch?.(location.lat, location.lng)
     }
-  }, [requestLocation, location, onLocationSearch])
+  }, [location, locationError, onLocationSearch])
 
   return (
     <div className="w-full max-w-2xl mx-auto">

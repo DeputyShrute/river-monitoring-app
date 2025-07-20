@@ -1,7 +1,11 @@
+'use client'
+
+import { useRouter } from 'next/navigation'
 import SearchHero from '@/components/SearchHero'
 import RecentStations from '@/components/RecentStations'
 
 export default function HomePage() {
+  const router = useRouter()
   return (
     <div className="min-h-screen bg-gradient-to-b from-blue-50 to-white">
       {/* Hero Section with Search */}
@@ -21,7 +25,10 @@ export default function HomePage() {
             Get real-time river levels with weather context.
           </p>
           
-          <SearchHero />
+          <SearchHero 
+            onSearch={(query) => router.push(`/search?q=${encodeURIComponent(query)}`)}
+            onLocationSearch={(lat, lng) => router.push(`/search?lat=${lat}&lng=${lng}`)}
+          />
         </div>
       </section>
 
